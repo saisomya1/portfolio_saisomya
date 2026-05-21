@@ -49,15 +49,15 @@ const About = () => {
                         </p>
                         <div className="stats-row">
                             <div className="stat-item">
-                                <div className="stat-number">20+</div>
+                                <div className="stat-number">8+</div>
                                 <div className="stat-label">Projects Done</div>
                             </div>
                             <div className="stat-item">
-                                <div className="stat-number">15+</div>
+                                <div className="stat-number">5+</div>
                                 <div className="stat-label">Happy Clients</div>
                             </div>
                             <div className="stat-item">
-                                <div className="stat-number">2.5+</div>
+                                <div className="stat-number">2+</div>
                                 <div className="stat-label">Years Exp</div>
                             </div>
                         </div>
