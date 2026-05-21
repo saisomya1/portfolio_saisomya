@@ -10,7 +10,7 @@ const Hero = () => {
                     <div className="hero-content anim-up">
                         <div className="hero-tag">
                             <span className="dot"></span>
-                            1+ Years Experience
+                            2+ Years Experience
                         </div>
 
                         <h1 className="hero-title">
@@ -51,10 +51,10 @@ const Hero = () => {
                     <div className="hero-image anim-up d2">
                         <div className="profile-wrapper">
                             <div className="profile-card glass">
-                               <img
-                                 src={profilePic}
-                                 alt="Sai Somya – Android Developer"
-                                 className="profile-image"
+                                <img
+                                    src={profilePic}
+                                    alt="Sai Somya – Android Developer"
+                                    className="profile-image"
                                 />
                                 <div className="neon-line cyan"></div>
                                 <div className="neon-line purple"></div>
