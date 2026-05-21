@@ -1,6 +1,102 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import emailjs from '@emailjs/browser';
+
+// ─── EmailJS credentials ───────────────────────────────────────────────────
+// 1. Sign up at https://www.emailjs.com/
+// 2. Create a Service  → copy the Service ID  → replace YOUR_SERVICE_ID
+// 3. Create a Template → copy the Template ID → replace YOUR_TEMPLATE_ID
+//    Template variables needed: {{from_name}}, {{from_email}}, {{message}}
+// 4. Go to Account → API Keys → copy Public Key → replace YOUR_PUBLIC_KEY
+const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
+// ───────────────────────────────────────────────────────────────────────────
+
+const initialForm = { name: '', email: '', message: '' };
+const initialErrors = { name: '', email: '', message: '' };
 
 const Contact = () => {
+    const formRef = useRef(null);
+    const [form, setForm] = useState(initialForm);
+    const [errors, setErrors] = useState(initialErrors);
+    const [loading, setLoading] = useState(false);
+    const [toast, setToast] = useState(null); // { type: 'success'|'error', msg: '' }
+
+    /* Auto-dismiss toast after 4 s */
+    useEffect(() => {
+        if (!toast) return;
+        const timer = setTimeout(() => setToast(null), 4000);
+        return () => clearTimeout(timer);
+    }, [toast]);
+
+    const validate = () => {
+        const newErrors = { name: '', email: '', message: '' };
+        let valid = true;
+
+        if (!form.name.trim()) {
+            newErrors.name = 'Name is required';
+            valid = false;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!form.email.trim()) {
+            newErrors.email = 'Email is required';
+            valid = false;
+        } else if (!emailRegex.test(form.email)) {
+            newErrors.email = 'Please enter a valid email address';
+            valid = false;
+        }
+
+        if (!form.message.trim()) {
+            newErrors.message = 'Message is required';
+            valid = false;
+        } else if (form.message.trim().length < 10) {
+            newErrors.message = 'Message must be at least 10 characters';
+            valid = false;
+        }
+
+        setErrors(newErrors);
+        return valid;
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm((prev) => ({ ...prev, [name]: value }));
+        // Clear error on edit
+        if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!validate()) return;
+
+        setLoading(true);
+
+        emailjs
+            .send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                {
+                    from_name: form.name,
+                    from_email: form.email,
+                    message: form.message,
+                    to_email: 'saisomya1@gmail.com',
+                },
+                EMAILJS_PUBLIC_KEY
+            )
+            .then(() => {
+                setToast({ type: 'success', msg: '✅ Message sent successfully!' });
+                setForm(initialForm);
+                setErrors(initialErrors);
+            })
+            .catch(() => {
+                setToast({ type: 'error', msg: '❌ Failed to send. Please try again.' });
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
+
     return (
         <section id="contact">
             <div className="container">
@@ -79,27 +175,71 @@ const Contact = () => {
 
                     {/* RIGHT – form */}
                     <div className="contact-form-card glass">
-                        <form onSubmit={(e) => e.preventDefault()}>
+                        <form ref={formRef} onSubmit={handleSubmit} noValidate>
                             <div className="form-group">
                                 <label htmlFor="name">Full Name</label>
-                                <input id="name" type="text" placeholder="John Doe" />
+                                <input
+                                    id="name"
+                                    name="name"
+                                    type="text"
+                                    placeholder="John Doe"
+                                    value={form.name}
+                                    onChange={handleChange}
+                                    className={errors.name ? 'error' : ''}
+                                />
+                                {errors.name && <span className="field-error">{errors.name}</span>}
                             </div>
+
                             <div className="form-group">
                                 <label htmlFor="email">Email Address</label>
-                                <input id="email" type="email" placeholder="john@example.com" />
+                                <input
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    placeholder="john@example.com"
+                                    value={form.email}
+                                    onChange={handleChange}
+                                    className={errors.email ? 'error' : ''}
+                                />
+                                {errors.email && <span className="field-error">{errors.email}</span>}
                             </div>
+
                             <div className="form-group">
                                 <label htmlFor="message">Message</label>
-                                <textarea id="message" rows="4" placeholder="Tell me about your project..."></textarea>
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    rows="4"
+                                    placeholder="Tell me about your project..."
+                                    value={form.message}
+                                    onChange={handleChange}
+                                    className={errors.message ? 'error' : ''}
+                                ></textarea>
+                                {errors.message && <span className="field-error">{errors.message}</span>}
                             </div>
-                            <button type="submit" className="btn-primary submit-btn">
-                                Send Message
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m22 2-7 20-4-9-9-4Z" /><path d="m22 2-11 11" /></svg>
+
+                            <button
+                                type="submit"
+                                className="btn-primary submit-btn"
+                                disabled={loading}
+                                style={{ opacity: loading ? 0.75 : 1 }}
+                            >
+                                {loading ? 'Sending…' : 'Send Message'}
+                                {!loading && (
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m22 2-7 20-4-9-9-4Z" /><path d="m22 2-11 11" /></svg>
+                                )}
                             </button>
                         </form>
                     </div>
                 </div>
             </div>
+
+            {/* Toast notification */}
+            {toast && (
+                <div className={`toast ${toast.type}`}>
+                    {toast.msg}
+                </div>
+            )}
         </section>
     );
 };
