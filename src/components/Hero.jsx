@@ -51,10 +51,11 @@ const Hero = () => {
                     <div className="hero-image anim-up d2">
                         <div className="profile-wrapper">
                             <div className="profile-card glass">
-                                <img
-                                    src={profilePic}
-                                    alt="Sai Somya – Android Developer"
-                                />
+                               <img
+    src={profilePic}
+    alt="Sai Somya – Android Developer"
+    className="profile-image"
+/>
                                 <div className="neon-line cyan"></div>
                                 <div className="neon-line purple"></div>
                             </div>
