@@ -53,7 +53,14 @@ const Navbar = () => {
                     ))}
                 </div>
 
-                <a href="#" className="btn-primary nav-resume">Resume</a>
+                <a
+                    href="/Sai-somya-2026.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary nav-resume"
+                >
+                    Resume
+                </a>
 
                 <button
                     className="hamburger"

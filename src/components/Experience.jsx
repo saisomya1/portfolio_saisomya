@@ -2,25 +2,25 @@ import React from 'react';
 
 const experiences = [
     {
-        role: 'Senior Android Engineer',
-        company: 'TechCorp Solutions',
-        period: '2022 – Present',
+        role: 'Software Engineer',
+        company: 'Anviam Solutions Private Limited',
+        period: 'July 2024 – Present',
         side: 'left',
         details: [
-            'Led checkout latency optimizations reducing drop-offs by 15%',
-            'Architected robust payment modules for multi-country support',
-            'Mentored junior developers and defined team best-practices',
+            'Designed, developed, and maintained scalable Android applications using Kotlin and MVVM & MVC architecture, ensuring clean separation of concerns',
+            'Integrated and managed RESTful APIs using Retrofit, handling authentication, error states, and data parsing efficiently',
+            'Implemented and maintained Firebase services including Authentication, Cloud Messaging (FCM), and Analytics to support user engagement and app monitoring',
+            'Proactively improved app performance and stability by debugging complex issues, reducing crash rates, and optimizing network and UI performance',
+            'Worked cross-functionally with UI/UX designers, backend engineers, and product teams within an Agile/Scrum environment to deliver features end-to-end',
         ],
     },
     {
-        role: 'Android Developer',
-        company: 'Innovation Labs',
-        period: '2021 – 2022',
+        role: 'Internship',
+        company: 'Research Center of Centurion University of Technology and Management',
+        period: 'Academic Internship',
         side: 'right',
         details: [
-            'Migrated legacy codebase to MVVM + Kotlin Coroutines',
-            'Integrated real-time sync using Firebase Firestore',
-            'Collaborated with UI/UX team for pixel-perfect implementations',
+            'Study of Industrial IOT Automation',
         ],
     },
 ];
