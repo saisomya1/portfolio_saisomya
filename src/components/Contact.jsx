@@ -7,9 +7,9 @@ import emailjs from '@emailjs/browser';
 // 3. Create a Template → copy the Template ID → replace YOUR_TEMPLATE_ID
 //    Template variables needed: {{from_name}}, {{from_email}}, {{message}}
 // 4. Go to Account → API Keys → copy Public Key → replace YOUR_PUBLIC_KEY
-const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
-const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
-const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
+const EMAILJS_SERVICE_ID = 'service_gisxx89';
+const EMAILJS_TEMPLATE_ID = 'template_jvnyzvq';
+const EMAILJS_PUBLIC_KEY = 'w4hT0LU-Ut9miaHuz';
 // ───────────────────────────────────────────────────────────────────────────
 
 const initialForm = { name: '', email: '', message: '' };
@@ -66,36 +66,47 @@ const Contact = () => {
         if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!validate()) return;
+    const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        setLoading(true);
+    if (!validate()) return;
 
-        emailjs
-            .send(
-                EMAILJS_SERVICE_ID,
-                EMAILJS_TEMPLATE_ID,
-                {
-                    from_name: form.name,
-                    from_email: form.email,
-                    message: form.message,
-                    to_email: 'saisomya1@gmail.com',
-                },
-                EMAILJS_PUBLIC_KEY
-            )
-            .then(() => {
-                setToast({ type: 'success', msg: '✅ Message sent successfully!' });
-                setForm(initialForm);
-                setErrors(initialErrors);
-            })
-            .catch(() => {
-                setToast({ type: 'error', msg: '❌ Failed to send. Please try again.' });
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+    setLoading(true);
+
+    const templateParams = {
+        from_name: form.name,
+        from_email: form.email,
+        message: form.message,
     };
+
+    try {
+        const response = await emailjs.send(
+            'service_gisxx89',
+            'template_jvnyzvq',
+            templateParams,
+            'w4hT0LU-Ut9miaHuz'
+        );
+
+        console.log('SUCCESS!', response);
+
+        setToast({
+            type: 'success',
+            msg: '✅ Message sent successfully!',
+        });
+
+        setForm(initialForm);
+        setErrors(initialErrors);
+    } catch (error) {
+        console.error('EMAILJS ERROR:', error);
+
+        setToast({
+            type: 'error',
+            msg: '❌ Failed to send. Check console.',
+        });
+    } finally {
+        setLoading(false);
+    }
+};
 
     return (
         <section id="contact">
