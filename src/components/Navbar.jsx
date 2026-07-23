@@ -54,7 +54,7 @@ const Navbar = () => {
                 </div>
 
                 <a
-                    href="/Sai-somya-2026.pdf"
+                    href="/Sai somya(AE 2y).pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary nav-resume"
